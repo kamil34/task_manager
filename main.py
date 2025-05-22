@@ -21,6 +21,8 @@ class Tasks:
                     print(x['id'], '    Yes     ', x['task'])
                 elif x['completed'] == False:
                     print(x['id'], '    No     ', x['task'])
+                input("Hit enter to go back to the menu")
+                main()
     def maintain(self):
         if self.maintain_option == 1:
             print('\n', 'Task adding process...')
@@ -122,7 +124,8 @@ def main():
             time.sleep(.9)
             return main()
     elif option == 2:
-        Tasks.display()
+        tasks = Tasks(None, None)
+        tasks.display()
     elif option == 3:
         print('3')
     elif option > 3 or option < 1:

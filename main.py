@@ -21,8 +21,8 @@ class Tasks:
                     print(x['id'], '    Yes     ', x['task'])
                 elif x['completed'] == False:
                     print(x['id'], '    No     ', x['task'])
-                input("Hit enter to go back to the menu")
-                main()
+            input("Hit enter to go back to the menu")
+            main()
     def maintain(self):
         if self.maintain_option == 1:
             print('\n', 'Task adding process...')

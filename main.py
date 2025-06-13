@@ -2,6 +2,7 @@
 from datetime import datetime
 import time
 import json
+from sys import exit
 
 current_time = datetime.now().strftime("%m/%d/%Y, %I:%M:%S %p")
 
@@ -33,9 +34,9 @@ class Tasks:
                 time.sleep(.9)
                 return self.maintain()
             print('\n', 'Task adding process...')
-            # JSON interaction
-            with open('tasks.json', 'r+') as openfile:
-                file_data = json.load(openfile)
+            # JSON interaction (adding)
+            with open('tasks.json', 'r+') as open_file:
+                file_data = json.load(open_file)
                 current_id = max(file_data['data'], key=lambda ev: ev['id'])
                 task_data = {
                 "id": int(current_id['id'])+1,
@@ -43,21 +44,36 @@ class Tasks:
                 "completed": False,
                 }
                 file_data['data'].append(task_data)
-                openfile.seek(0)
-                json_object = json.dump(file_data, openfile, indent=4)
+                open_file.seek(0)
+                json_object = json.dump(file_data, open_file, indent=4)
             print('Successfully added!')
             time.sleep(.4)
             self.display()
         if self.maintain_option == 2:
-            print('\n', 'Task removing process...')
+            print('\n', 'Task removal process...')
             print('What task do you wish to remove? Enter your task number')
             try:
-                task_name = int(input("Task number: "))
-            except ValueError:
-                print("You must only use numbers!")
+                task_num = int(input("Task number: "))
+                # To do task removal process (json)
+                # JSON interaction (removal)
+                with open('tasks.json', 'r+') as open_file:
+                    file_data = json.load(open_file)
+                    for i in file_data['data']:
+                        if i['id'] == task_num:
+                            del file_data['data'][task_num-1]
+                    for item in file_data['data']:
+                        # To do
+                        if item['id'] > 1 and (item['id'] - 1) != item['id'] :
+                            item['id'] -= 1
+                    open_file.seek(0)
+                    open_file.truncate()
+                    json_object = json.dump(file_data, open_file, indent=4)
+            except ValueError as err:
+                # err
+                print("Wrong number! Try again", '\n', err)
                 time.sleep(.9)
                 return self.maintain()
-            print('\n', 'Task removing process...')
+            print('\n', 'Task removal process...')
             print('Successfully removed!')
             time.sleep(.4)
             self.display()
@@ -65,7 +81,8 @@ class Tasks:
             print('\n', 'Change task status')
             print('What task you wish to maintain? Please provide the number')
             try:
-                task_name = int(input("Task number: "))
+                task_num = int(input("Task number: "))
+                # To do task maintaining process
             except ValueError:
                 print("You must only use numbers identified above!")
                 time.sleep(.9)
@@ -128,6 +145,8 @@ def main():
         tasks.display()
     elif option == 3:
         print('3')
+    elif option == 4:
+        exit()
     elif option > 3 or option < 1:
         print("You must only use numbers identified above!")
         time.sleep(.9)
